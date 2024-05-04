@@ -15,7 +15,7 @@ headers = ["District", "Year", "Month\Date", "1", "2", "3", "4", "5", "6", "7", 
            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "Janina"]
 
-df = pd.read_excel("D:\Trimester - 2\OOP Lab\Project\Data Set\Copy of Daily  Max  Temp Till Jun_2014.xls", names = headers)
+df = pd.read_excel("C:\Musfique's Folder\Python\OOPProject\Data Set\Copy of Daily  Max  Temp Till Jun_2014.xls", names = headers)
 
 df1 = df.copy()
 
