@@ -15,7 +15,7 @@ def plotting(month, year, district, df):
     ax1.set_title(f"Tempareture of {district} in {month} of {year}")
     ax1.set_xlabel('Day')
     ax1.set_ylabel('Tempareture')
-
+    
     canvas = FigureCanvasTkAgg(fig1, root)
     canvas.draw()
     canvas.get_tk_widget().place(relx=1, x=-900, y=900, anchor=S)

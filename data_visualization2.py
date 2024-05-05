@@ -40,8 +40,10 @@ def creat_df(month_index, year, district):
     dist.replace("****", np.nan, inplace = True)
 
     dist_year = dist.loc[dist["Year"] == year].reset_index(drop = True)
+    dist_year = dist_year.interpolate()
+    dist_year = dist_year.fillna(method = "bfill")
 
-    dist_year['Tempareture of the month'] = dist_year.iloc[:, 3:34].mean(axis=1)
+    # dist_year['Tempareture of the month'] = dist_year.iloc[:, 3:34].mean(axis=1)
 
     """## Making Datasets for each months"""
 
@@ -55,5 +57,3 @@ def creat_df(month_index, year, district):
 
     return final_df
 
-
-print(creat_df(1, 1948, 'Bogra'))
