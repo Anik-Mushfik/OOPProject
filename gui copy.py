@@ -13,6 +13,8 @@ class WaterModelApp(ct.CTk):
         self.state("zoomed")
         self.create_widgets()
 
+
+
     def create_widgets(self):
         # Making the borders and the title label
         self.title_label = ct.CTkLabel(self, text="Water Model ", font=("comicsansms", 40, "bold", "italic"), border_width=3, relief="sunken")
@@ -80,6 +82,8 @@ class WaterModelApp(ct.CTk):
         canvas.draw()
         canvas.get_tk_widget().place(relx=1, x=-900, y=900, anchor="s")
 
-if __name__ == "__main__":
-    app = WaterModelApp()
-    app.mainloop()
+
+
+
+app = WaterModelApp()
+app.mainloop()

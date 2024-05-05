@@ -10,7 +10,7 @@ from customtkinter import *
 def plotting(month, year, district, df):
 
     # Assuming 'february' DataFrame is defined somewhere else based on user's selection
-    fig1, ax1 = plt.subplots()
+    fig1, ax1 = plt.subplots(figsize=(10, 6))
     ax1.plot(df['Day'], df['Tempareture'])
     ax1.set_title(f"Tempareture of {district} in {month} of {year}")
     ax1.set_xlabel('Day')

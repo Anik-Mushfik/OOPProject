@@ -1,12 +1,11 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 headers = ["District", "Year", "Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "Janina"]
 
-df = pd.read_excel("C:\Musfique's Folder\Python\OOPProject\Data Set\Copy of Daily  Max  Temp Till Jun_2014.xls", names = headers)
+df = pd.read_excel("C:\Musfique's Folder\Python\OOPProject\Data Set\Copy of Daily  Min  Temp Till Jun_2014.xls", names = headers)
 
 df1 = df.copy()
 
@@ -31,7 +30,7 @@ df1.head(10)
 """Locating a district and making a separate dataset of it"""
 
 
-def creat_df(month_index, year, district):
+def creat_min_df(month_index, year, district):
     dist = df1.loc[df1["District"] == f"{district}"]
     
     """## Dealing With Nul Values"""
@@ -47,13 +46,13 @@ def creat_df(month_index, year, district):
 
     """## Making Datasets for each months"""
 
-    final_df = pd.DataFrame(dist_year.iloc[month_index])
-    final_df = final_df.reset_index()
-    final_df.rename(columns = {'index' : "Day"}, inplace = True)
-    final_df.rename(columns = {month_index : 'Tempareture'}, inplace = True)
-    final_df.drop(final_df.head(3).index, inplace=True)
-    final_df = final_df.reset_index(drop = True)
+    final_min_df = pd.DataFrame(dist_year.iloc[month_index])
+    final_min_df = final_min_df.reset_index()
+    final_min_df.rename(columns = {'index' : "Day"}, inplace = True)
+    final_min_df.rename(columns = {month_index : 'Tempareture'}, inplace = True)
+    final_min_df.drop(final_min_df.head(3).index, inplace=True)
+    final_min_df = final_min_df.reset_index(drop = True)
 
 
-    return final_df
+    return final_min_df
 
