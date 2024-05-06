@@ -9,7 +9,8 @@ df = pd.read_excel("C:\Musfique's Folder\Python\OOPProject\Data Set\Copy of Dail
 
 df1 = df.copy()
 
-df1.head(10)
+
+
 """Replacing the 1234s with month names"""
 
 replace_values = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May",
@@ -18,24 +19,23 @@ replace_values = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May",
 
 df1["Month"] = df1["Month"].replace(replace_values)
 
+
+
 """Deleted the first 7 rows as they don't have any valuable data."""
 
 df1.drop(df1.head(7).index, inplace= True)
 df1.drop('Janina', axis=1, inplace=True)
 
-df1.shape
 
-df1.head(10)
 
 """Locating a district and making a separate dataset of it"""
-
 
 def creat_max_df(month_index, year, district):
     dist = df1.loc[df1["District"] == f"{district}"]
     
     """## Dealing With Nul Values"""
 
-# replacing "****" with NaN
+    # replacing "****" with NaN
     dist.replace("****", np.nan, inplace = True)
 
     dist_year = dist.loc[dist["Year"] == year].reset_index(drop = True)
@@ -55,4 +55,3 @@ def creat_max_df(month_index, year, district):
 
 
     return final_max_df
-

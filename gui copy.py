@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 # import pandas as pd
 import customtkinter as ct
-from data_visualization2 import creat_df
+from OOPProject.max_temp_analysis import creat_df
 
 class WaterModelApp(ct.CTk):
     def __init__(self):
@@ -84,6 +84,6 @@ class WaterModelApp(ct.CTk):
 
 
 
-
-app = WaterModelApp()
-app.mainloop()
+if __name__ == "__main__":
+    app = WaterModelApp()
+    app.mainloop()

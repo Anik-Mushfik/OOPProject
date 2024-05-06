@@ -1,138 +1,108 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import pandas as pd
-from tkinter import *
-from data_visualization import *
 import customtkinter as ct
-from customtkinter import *
+from max_temp_analysis import creat_max_df
+from min_temp_analysis import creat_min_df
+from humidity_analysis import creat_humidity_df
+from rainfall_analysis import creat_rainfall_df
 
+class WeatherAnalyzerApp(ct.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Water Modeling System")
+        self.geometry("1920x1080")
+        self.resizable(height=True, width=True)
+       #  self.state("zoomed")
+        
+        # Making the borders and the title label
+        self.title_label = ct.CTkLabel(self, text="Bangladesh Weather History Analyzer", font=("comicsansms", 40, "bold", "italic"))
+        self.title_label.pack(side="top", fill="x")
 
-ct.set_appearance_mode("light")
-ct.set_default_color_theme("dark-blue")
+        # Dark mode button
+        self.switch = ct.CTkSwitch(self, text="Dark Mode", command=self.change_mode)
+        self.switch.pack(side="bottom")
 
+        # Drop down box of months
+        self.options_month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        self.clicked_month = ct.StringVar()
+        self.clicked_month.set("Month")
+        self.drop_month = ct.CTkOptionMenu(self, variable=self.clicked_month, values=self.options_month, font=("Arial", 24, "bold"), border_width=2, relief="sunken")
+        self.drop_month.place(relx=1, x=-300, y=200, anchor="s")
 
+        # Drop down box of years
+        self.options_year = [i for i in range(1948, 2016)]
+        self.clicked_year = ct.IntVar()
+        self.clicked_year.set("Year")
+        self.drop_year = ct.CTkOptionMenu(self, variable=self.clicked_year, values=self.options_year, font=("Arial", 24, "bold"), border_width=2, relief="sunken")
+        self.drop_year.place(relx=1, x=-800, y=200, anchor="s")
 
-# Creating the window
-root = CTk()
-root.title("Water Modeling System")
-root.geometry("1920x1080")
-root.resizable(height=True,width=True)
-root.state("zoomed")
+        # Drop down box of districts
+        self.options_district = ['Bogra', 'Comilla', "Cox's Bazar", 'Dinajpur', 'Faridpur', 'Jessore', 'Khulna', 'Mymensingh', 'Satkhira', 'Srimangal', 'Barisal', 'Chittagong', 'M.court', 'Dhaka', 'Sylhet', 'Rangamati', 'Rangpur', 'Ishurdi', 'Chandpur', 'Rajshahi', 'Bhola', 'Hatiya', 'Sandwip', 'Feni', 'Patuakhali', 'Khepupara', 'Madaripur', 'Sitakunda', 'Teknaf', 'Kutubdia', 'Tangail', 'Chuadanga', 'Mongla', 'Sydpur', 'Ambagan(Ctg)']
+        self.clicked_district = ct.StringVar()
+        self.clicked_district.set("District")
+        self.drop_district = ct.CTkOptionMenu(self, variable=self.clicked_district, values=self.options_district, font=("Arial", 24, "bold"), border_width=2, relief="sunken")
+        self.drop_district.place(relx=1, x=-1300, y=200, anchor="s")
 
+        # Button to trigger plotting
+        self.plot_button = ct.CTkButton(self, text="Create The Graph", font=("Times", 30, "bold"), command=self.plot_selected)
+        self.plot_button.place(relx=1, x=-790, y=350, anchor="s")
 
+    def change_mode(self):
+        if self.switch.get():
+            ct.set_appearance_mode("dark")
+        else:
+            ct.set_appearance_mode("light")
 
+    def plot_selected(self):
+        month = self.clicked_month.get()
+        month_index = self.options_month.index(month)
+        year = self.clicked_year.get()
+        district = self.clicked_district.get()
 
-# Making the borders and the title label
-title_label=Label(text= "Water Model ", bg="orchid" ,fg="pink" , font=("comicsansms",40,"bold", "italic"), borderwidth=3,relief=SUNKEN ) 
-title_label.pack(side=TOP,fill="x") 
-title_label=Label( bg="orchid1" ,fg="pink" , font=("comicsansms",24,"bold"), borderwidth=3,relief=SUNKEN ) 
-title_label.pack(side=BOTTOM,fill="x") 
-title_label=Label(bg="orchid2" ,fg="pink" , font=("comicsansms",24,"bold"), borderwidth=3,relief=SUNKEN ) 
-title_label.pack(side=LEFT,fill="y") 
-title_label=Label( bg="orchid3" ,fg="pink" , font=("comicsansms",24,"bold"), borderwidth=3,relief=SUNKEN ) 
-title_label.pack(side=RIGHT,fill="y") 
+        df_max = creat_max_df(month_index, year, district)
+        df_min = creat_min_df(month_index, year, district)
+        df_humidity = creat_humidity_df(month_index, year, district)
+        df_rainfall = creat_rainfall_df(month_index, year, district)
 
+        self.plot_temperature(month, year, district, df_max, df_min)
+        self.plot_humidity(month, year, district, df_humidity)
+        self.plot_rainfall(month, year, district, df_rainfall)
 
-# Making the sidebad
-sidebar_frame = Frame(root, bg='orchid3')
-sidebar_frame.pack(fill='y', side='left')
+    def plot_temperature(self, month, year, district, df_max, df_min):
+        fig, ax = plt.subplots()
+        ax.plot(df_max['Day'], df_max['Tempareture'], label="Max Tempareture")
+        ax.plot(df_min['Day'], df_min['Tempareture'], label="Min Tempareture")
+        ax.set_title(f"Tempareture of {district} in {month} of {year}")
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Tempareture')
+        ax.legend()
 
-side_label = Label(sidebar_frame, text="Choose Your\nOptions", bg='orchid4', font='Calicri 24 bold', foreground="white")
-side_label.pack()
+        canvas = FigureCanvasTkAgg(fig, self)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=1, x=-330, y=900, anchor="s")
 
-temp_button = Button(sidebar_frame, text='Min Temperature', font='Aial 24 bold', bg='lightyellow2', fg='black',borderwidth=8)
-temp_button.pack(pady=40)
+    def plot_humidity(self, month, year, district, df):
+        fig, ax = plt.subplots()
+        ax.plot(df['Day'], df['Humidity'])
+        ax.set_title(f"Humidity of {district} in {month} of {year}")
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Humidity')
 
-temp_button = Button(sidebar_frame, text='Min Temperature', font='Aial 24 bold', bg='lightyellow2', fg='black',borderwidth=8)
-temp_button.pack(pady=40)
+        canvas = FigureCanvasTkAgg(fig, self)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=1, x=-950, y=900, anchor="s")
 
-temp_button = Button(sidebar_frame, text='Humidity', font='Aial 24 bold', bg='lightyellow2', fg='black',borderwidth=8)
-temp_button.pack(pady=40, fill='x')
+    def plot_rainfall(self, month, year, district, df):
+        fig, ax = plt.subplots()
+        ax.plot(df['Day'], df['Rainfall'])
+        ax.set_title(f"Rainfall of {district} in {month} of {year}")
+        ax.set_xlabel('Day')
+        ax.set_ylabel('Rainfall')
 
-temp_button = Button(sidebar_frame, text='Sunshine', font='Aial 24 bold', bg='lightyellow2', fg='black',borderwidth=8)
-temp_button.pack(pady=40, fill='x')
+        canvas = FigureCanvasTkAgg(fig, self)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=1, x=-1590, y=900, anchor="s")
 
-temp_button = Button(sidebar_frame, text='Rainfall', font='Aial 24 bold', bg='lightyellow2', fg='black', borderwidth=8)
-temp_button.pack(pady=40, fill='x')
-
-
-# Dark mode button
-def changeMode():
-       val = switch.get()
-       if val:
-              ct.set_appearance_mode("dark")
-       else:
-              ct.set_appearance_mode("light")
-
-switch = CTkSwitch(sidebar_frame, text="Dark Mode",
-                  onvalue=1, 
-                  offvalue=0, 
-                  command=changeMode)
-switch.pack(side= "bottom")
-print(switch.get())
-
-
-
-
-# Drop down box of months
-options_month = ['January', 'Februray', 'March', 'April', 'May', 'June', 'July', 
-           'August', 'September', 'October', 'November', 'December']
-clicked_month = StringVar()
-clicked_month.set("Month")
-
-drop_month = OptionMenu(root, clicked_month, *options_month)
-drop_month.config(font="Arial 24 bold", relief=SUNKEN)
-drop_month.place(relx =1, x =-300, y = 200, anchor =S)
-
-
-# Drop down box of years
-options_year = [i for i in range(1948, 2016)]
-clicked_year = StringVar()
-clicked_year.set("Year")
-
-drop_year = OptionMenu(root, clicked_year, *options_year)
-drop_year.config(font="Arial 24 bold", relief=SUNKEN)
-drop_year.place(relx =1, x =-800, y = 200, anchor =S)
-
-
-# drop down box of districs
-options_district = ['Bogra', 'Comilla', "Cox's Bazar", 'Dinajpur', 'Faridpur',
-       'Jessore', 'Khulna', 'Mymensingh', 'Satkhira', 'Srimangal',
-       'Barisal', 'Chittagong', 'M.court', 'Dhaka', 'Sylhet', 'Rangamati',
-       'Rangpur', 'Ishurdi', 'Chandpur', 'Rajshahi', 'Bhola', 'Hatiya',
-       'Sandwip', 'Feni', 'Patuakhali', 'Khepupara', 'Madaripur',
-       'Sitakunda', 'Teknaf', 'Kutubdia', 'Tangail', 'Chuadanga',
-       'Mongla', 'Sydpur', 'Ambagan(Ctg)']
-clicked_district = StringVar()
-clicked_district.set("District")
-
-drop_district = OptionMenu(root, clicked_district, *options_district)
-drop_district.config(font="Arial 24 bold", relief=SUNKEN)
-drop_district.place(relx =1, x =-1300, y = 200, anchor =S)
-
-
-
-
-
-def plotting():
-       fig1, ax1 = plt.subplots()
-       ax1.plot(february['Day'], february['Tempareture'])
-       ax1.set_title("Tempareture of Bogra in 1948")
-       ax1.set_xticks(['5', '10','15', '20','25','30'])
-       ax1.set_xlabel('Day')
-       ax1.set_ylabel('Tempareture')
-
-
-       canvas = FigureCanvasTkAgg(fig1, root)
-       canvas.draw()
-       canvas.get_tk_widget().place(relx =1, x =-900, y = 900, anchor =S)
-
-
-
-
-
-bt_1 = Button(master=root, text="Create The Graph", font="Times 30 bold", command=plotting)
-bt_1.place(relx =1, x =-790, y = 350, anchor =S)
-
-
-root.mainloop()
+if __name__ == "__main__":
+    app = WeatherAnalyzerApp()
+    app.mainloop()

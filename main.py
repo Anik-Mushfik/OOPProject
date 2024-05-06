@@ -15,8 +15,8 @@ ct.set_appearance_mode("light")
 # Define the plotting function
 def temp_plotting(month, year, district, df_max, df_min):
 
-    # Assuming 'february' DataFrame is defined somewhere else based on user's selection
-    fig1, ax1 = plt.subplots()#(2,1),figsize=(10, 5)
+
+    fig1, ax1 = plt.subplots()
     ax1.plot(df_max['Day'], df_max['Tempareture'], label = "Max Tempareture")
     ax1.plot(df_min['Day'], df_min['Tempareture'], label = "Min Tempareture")
     ax1.set_title(f"Tempareture of {district} in {month} of {year}")
@@ -32,8 +32,8 @@ def temp_plotting(month, year, district, df_max, df_min):
 
 def humidity_plotting(month, year, district, df):
 
-    # Assuming 'february' DataFrame is defined somewhere else based on user's selection
-    fig1, ax1 = plt.subplots()#(2,1),figsize=(10, 5)
+
+    fig1, ax1 = plt.subplots()
     ax1.plot(df['Day'], df['Humidity'])
     ax1.set_title(f"Humidity of {district} in {month} of {year}")
     ax1.set_xlabel('Day')
@@ -48,7 +48,7 @@ def humidity_plotting(month, year, district, df):
 
 def rainfall_plotting(month, year, district, df):
 
-    fig1, ax1 = plt.subplots()#(2,1),figsize=(10, 5)
+    fig1, ax1 = plt.subplots()
     ax1.scatter(df['Day'], df['Rainfall'])
     ax1.set_title(f"Rainfall of {district} in {month} of {year}")
     ax1.set_xlabel('Day')
@@ -79,13 +79,6 @@ title_label.pack(side=LEFT, fill="y")
 title_label = Label(bg="orchid3", fg="pink", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
 title_label.pack(side=RIGHT, fill="y")
 
-# Making the sidebar
-# sidebar_frame = Frame(root, bg='orchid3')
-# sidebar_frame.pack(fill='y', side='left')
-
-# side_label = Label(sidebar_frame, text="Choose Your\nOptions", bg='orchid4', font='Calicri 24 bold',
-#                    foreground="white")
-# side_label.pack()
 
 # Dark mode button
 def changeMode():
