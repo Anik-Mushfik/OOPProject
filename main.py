@@ -69,14 +69,14 @@ root.resizable(height=True, width=True)
 root.state("zoomed")
 
 # Making the borders and the title label
-title_label = Label(text="Bangladesh Weather History Analyzer", bg="orchid", fg="pink", font=("comicsansms", 40, "bold", "italic"),
+title_label = Label(text="Bangladesh Weather History Analyzer", bg="skyblue", fg="black", font=("comicsansms", 40, "bold", "italic"),
                     borderwidth=3, relief=SUNKEN)
 title_label.pack(side=TOP, fill="x")
-title_label = Label(bg="orchid1", fg="pink", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
+title_label = Label(bg="skyblue", fg="black", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
 title_label.pack(side=BOTTOM, fill="x")
-title_label = Label(bg="orchid2", fg="pink", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
+title_label = Label(bg="skyblue", fg="black", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
 title_label.pack(side=LEFT, fill="y")
-title_label = Label(bg="orchid3", fg="pink", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
+title_label = Label(bg="skyblue", fg="black", font=("comicsansms", 24, "bold"), borderwidth=3, relief=SUNKEN)
 title_label.pack(side=RIGHT, fill="y")
 
 
